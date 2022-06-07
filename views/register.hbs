@@ -1,0 +1,43 @@
+<div id="box">
+<h1> Register </h1>
+<p>This is the {{ title }} page</p>
+
+<form action="/createUser" method="POST">
+    <input id="username" type="text" name="username" placeholder="enter username"/><br>
+    <input id="age" type="number" name="age" placeholder="enter age"/><br>
+    <input id="phoneNumber" type="number" name="phoneNumber" placeholder="enter phone number"/><br>
+    <input id="email" type="email" name="email" placeholder="enter email"/><br>
+    <input id="password" type="password" name="password" placeholder="enter password" onkeyup="validatePasswords()" onclick="validatePasswords()"/><br>
+    <input id="confirmPassword" type="password" name="confirmPassword" placeholder="confirm password" onkeyup="validatePasswords()" onclick="validatePasswords()"/><br>
+
+    <input type="submit" id="sub" value="Register" disabled=true onclick="createCookie()"/>
+</form>
+
+<form action="/redirectToLogin" method="POST">
+    <input type="submit" id="redirect" value="Login Here"/>
+</form>
+</div>
+
+<script type="text/javascript">
+    function createCookie(){
+      console.log("1")
+      document.cookie = "username="+document.getElementById('username').value;
+      console.log("2")
+      console.log(document.cookie)
+    }
+    function validatePasswords()
+    {
+      var first = document.getElementById('password').value;
+      var second = document.getElementById('confirmPassword').value;
+      var n = first.localeCompare(second)
+      if(n != 0 || first.length ==0 || second.length==0)
+      {
+        document.getElementById('sub').disabled=true;
+      }
+      else
+      {
+        document.getElementById('sub').disabled=false;
+      }
+    }
+
+</script>
