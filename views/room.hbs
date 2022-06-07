@@ -1,0 +1,143 @@
+<div id="roomBox">
+<h1>
+    Welcome to {{ roomName }}!
+</h1>
+<p>Your username is currently <span class="username"></span></p>
+
+<p>To generate this room, use the room name ({{ roomName }}) and the room id ({{ newRoomId }})</p>
+
+<input class="searchMessages" type="text" name="searchBar" placeholder="search messages"/>
+
+<div id="messageBox"> {{ messagesHTML }} </div>
+
+<form action="/createText" method="POST">
+    <input id="username1" type="hidden" name="name" value=""></input>
+    <input id="username2" type="hidden" name="message" value=""></input>
+    <input type="hidden" name="roomID" value="{{ newRoomId }}"/>
+    <input id="messageInput" type="text" name="chatMessage" placeholder="enter chat message"/>
+    <input class="submitInput" type="submit" value="send message"/>
+</form>
+
+
+<form action="/editText" method="POST">
+    <input type="hidden" name="roomID" value="{{ newRoomId }}"/>
+    <input class="messageID" type="hidden" name="_id" value=""/>
+    <input id="editInput" type="text" name="editMessage" placeholder="enter edit message"/><br>
+    <input id="editSubmit" type="submit" value="send edit" disabled="true"/>
+</form>
+
+<form action="/deleteText" method="POST">
+    <input class="messageID" type="hidden" name="_id" value=""/>
+    <button id="deleteMessage" type="submit" disabled="true">delete message</button>
+</form>
+</div>
+
+<script>
+    var name;
+    var messageID;
+    var messageIDSet = new Array();
+    var messageList = new Array();
+
+
+    $(function() {
+        name = getCookie("username");
+        $(".username").html(name);
+        document.getElementById("username1").value = name;
+
+        $(".usernameUpdate").click(function() {
+            $(".username").html($(".usernameInput").val());
+            document.getElementById("username1").value = name;
+        });
+
+        $(".submitInput").click(function(){
+            if(name == "null") {
+                name = prompt("Please enter a username (cannot be \"null\")");
+                $(".username").html(name);
+                document.getElementById("username1").value = name;
+            }
+        })
+
+        var intervalID = setInterval(getMessages, 3000);
+
+        $(".submitInput").click(function() {
+            $(".messageInput").value = "";
+        })
+
+        $(".searchMessages").on("input", displayMessages);
+
+
+    })
+
+    function getMessages() {
+        fetch("http://localhost:8080/{{ newRoomId }}/messages")
+        .then(res => res.json())
+        .then(data => {
+            console.log("in data");
+            var html = "";
+            for(var i = 0; i < Object.keys(data).length; i++){
+                if(!messageIDSet.includes(data[i]._id)) { messageIDSet.push(data[i]._id); messageList.push(data[i]); }
+                //html += "<div>" + data[i].name + ": date: " + data[i].date + ", text: " + data[i].message + "</div>";
+                if(messageList[i].message.includes($(".searchMessages").val().trim().toLowerCase())) {
+                    html += "<div class=\"message\"><span class=\"hidden\">" + data[i].name + ";" + data[i]._id + ";</span><span class=\"messageHeader\">" + data[i].date.substring(11,16) + " " + data[i].name + ":</span> " + data[i].message + "&#13;&#10;</div>";
+                }
+            }
+            $("#messageBox").html(html);
+            $(".message").click(checkUser);
+        })
+    }
+
+    function checkUser() {
+        var text = this.innerHTML.split("span")[1].substring(16);
+        var message = this.innerHTML.split("span")[4].substring(2);
+        var metadataArray = text.substring(0, text.length - 3).split(";");
+        name = metadataArray[0];
+        messageID = metadataArray[1];
+        var user = getCookie("username");
+
+        if(user == name) {
+            $(".messageID").val(messageID);
+            $("#editInput").val(message);
+            document.getElementById("deleteMessage").disabled = false;
+            document.getElementById("editSubmit").disabled = false;
+        }
+        else {
+            $(".messageID").val("");
+            $("#editInput").val("");
+            document.getElementById("deleteMessage").disabled = true;
+            document.getElementById("editSubmit").disabled = true;
+        }
+    }
+
+    function getCookie(name) {
+        var dc = document.cookie;
+        var prefix = name + "=";
+        var begin = dc.indexOf("; " + prefix);
+        if (begin == -1) {
+            begin = dc.indexOf(prefix);
+            if (begin != 0) return null;
+        }
+        else
+        {
+            begin += 2;
+            var end = document.cookie.indexOf(";", begin);
+            if (end == -1) {
+                end = dc.length;
+            }
+        }
+        // because unescape has been deprecated, replaced with decodeURI
+        //return unescape(dc.substring(begin + prefix.length, end));
+        return decodeURI(dc.substring(begin + prefix.length, end));
+    }
+
+    function displayMessages() {
+        var html = "";
+        for(var i = 0; i < messageList.length; i++) {
+            var searchQuery = $(".searchMessages").val().trim().toLowerCase();
+            if(messageList[i].message.includes(searchQuery) || messageList[i].name.includes(searchQuery)) {
+                html += "<div class=\"message\"><span class=\"messageHeader\">" + messageList[i].date.substring(11,16) + " " + messageList[i].name + ":</span> " + messageList[i].message + "&#13;&#10;</div>";
+            }
+        }
+        $("#messageBox").html(html);
+    }
+
+</script>

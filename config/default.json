@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://cs175group:<password>@cluster0.n3bci.mongodb.net/?retryWrites=true&w=majority"
+}
