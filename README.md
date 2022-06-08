@@ -6,5 +6,6 @@
 ## Project Description
 <!-- you can include known bugs, design decisions, external references used... -->
 > Please run "npm install" in the terminal before running this code.
+> 
 > You can run the code by running "npm start"
 
