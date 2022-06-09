@@ -7,7 +7,8 @@ const config = require('config');
 const path = require('path');
 const Room = require('./models/Rooms');
 const Message = require('./models/Message');
-const User = require('./models/User')
+const User = require('./models/User');
+const Meal = require('./models/Meal');
 const roomGenerator = require('./util/roomIdGenerator.js');
 const Bcrypt = require("bcryptjs");
 
@@ -16,6 +17,8 @@ const homeHandler = require('./controllers/home.js');
 const roomHandler = require('./controllers/room.js');
 const registerHandler = require('./controllers/register.js');
 const loginHandler = require('./controllers/login.js');
+const mealHandler = require('./controllers/meal.js');
+
 
 const app = express();
 app.use(cookieParser());
@@ -78,6 +81,31 @@ app.post("/createText", function(req, res){
         .catch(e => console.log(e))
         //res.redirect("back")
     }
+})
+
+// POST new meal
+app.post("/createMeal", function(req, res){
+
+  var newMeal = new Meal({
+      mealName: "",
+      price: "",
+      cuisine: "",
+      username: ""
+  })
+
+  if(req.body.mealName != "null") {
+      newMeal = new Meal({
+          mealName: req.body.mealName,
+          price: req.body.price.toString(),
+          cuisine: req.body.cuisine,
+          username: req.body.name
+      })
+      console.log("newMeal = " + newMeal.mealName)
+      newMeal.save().then(console.log("meal added"))
+      .catch(e => console.log(e))
+      //res.redirect("back")
+      res.redirect("/home")
+  }
 })
 
 app.post("/editText", function(req, res){
@@ -199,6 +227,7 @@ app.get('/login', loginHandler.loginUser);
 app.get('/register', registerHandler.registerUser);
 app.get('/home', homeHandler.getHome);
 app.get('/:roomName/:id', roomHandler.getRoom);  //localhost:8080/room1/zknas
+app.get('/createMeal', mealHandler.createMeal);
 
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

@@ -1,0 +1,62 @@
+<div id="box">
+<h1> Create Meal </h1>
+<p>This is the {{ title }} page</p>
+
+<form action="/createMeal" method="POST">
+    <input id="username1" type="hidden" name="name" value=""></input>
+    <input id="cuisine1" type="hidden" name="cuisine" value=""></input>
+    <input id="mealName" type="text" name="mealName" placeholder="enter dish name"/><br>
+    <input id="price" type="number" name="price" placeholder="enter price in dollars"/><br>
+    <label for="filters">Filter:</label>
+    <select name="filters" id="filters" onchange="filterMessages()">
+        <option value="italian">Italian</option>
+        <option value="thai">Thai</option>
+        <option value="indian">Indian</option>
+        <option value="mexican">Mexican</option>
+        <option value="american">American</option>
+        <option value="vietnamese">Vietnamese</option>
+        <option value="japanese">Japanese</option>
+        <option value="korean">Korean</option>
+        <option value="hawaiian">Hawaiian</option>
+        <option value="mediterranean">Mediterranean</option>
+        <option value="cajun">Cajun</option>
+        <option value="vegetarian">Vegetarian</option>
+        <option value="vegan">Vegan</option>
+        <option value="seafood">Seafood</option>
+    </select>
+
+    <input type="submit" id="sub" value="Submit"/>
+</form>
+
+</div>
+<script type="text/javascript">
+$(function() {
+        name = getCookie("username");
+        $(".username").html(name);
+        document.getElementById("username1").value = name;
+        let dropdown = document.getElementById("filters");
+        let filter = dropdown.value;
+        document.getElementById("cuisine1").value = filter;
+    })
+
+function getCookie(name) {
+        var dc = document.cookie;
+        var prefix = name + "=";
+        var begin = dc.indexOf("; " + prefix);
+        if (begin == -1) {
+            begin = dc.indexOf(prefix);
+            if (begin != 0) return null;
+        }
+        else
+        {
+            begin += 2;
+            var end = document.cookie.indexOf(";", begin);
+            if (end == -1) {
+                end = dc.length;
+            }
+        }
+        // because unescape has been deprecated, replaced with decodeURI
+        //return unescape(dc.substring(begin + prefix.length, end));
+        return decodeURI(dc.substring(begin + prefix.length, end));
+    }
+</script>
