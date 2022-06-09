@@ -8,6 +8,24 @@
 
 <input class="searchMessages" type="text" name="searchBar" placeholder="search messages"/>
 
+<label for="filters">Filter:</label>
+<select name="filters" id="filters" onchange="filterMessages()">
+    <option value="italian">Italian</option>
+    <option value="thai">Thai</option>
+    <option value="indian">Indian</option>
+    <option value="mexican">Mexican</option>
+    <option value="american">American</option>
+    <option value="vietnamese">Vietnamese</option>
+    <option value="japanese">Japanese</option>
+    <option value="korean">Korean</option>
+    <option value="hawaiian">Hawaiian</option>
+    <option value="mediterranean">Mediterranean</option>
+    <option value="cajun">Cajun</option>
+    <option value="vegetarian">Vegetarian</option>
+    <option value="vegan">Vegan</option>
+    <option value="seafood">Seafood</option>
+</select>
+
 <div id="messageBox"> {{ messagesHTML }} </div>
 
 <form action="/createText" method="POST">
@@ -134,6 +152,18 @@
         for(var i = 0; i < messageList.length; i++) {
             var searchQuery = $(".searchMessages").val().trim().toLowerCase();
             if(messageList[i].message.includes(searchQuery) || messageList[i].name.includes(searchQuery)) {
+                html += "<div class=\"message\"><span class=\"messageHeader\">" + messageList[i].date.substring(11,16) + " " + messageList[i].name + ":</span> " + messageList[i].message + "&#13;&#10;</div>";
+            }
+        }
+        $("#messageBox").html(html);
+    }
+
+    function filterMessages() {
+        let dropdown = document.getElementById("filters");
+        var html = "";
+        for(var i = 0; i < messageList.length; i++) {
+            let filter = dropdown.value;
+            if(messageList[i].message.includes(filter) || messageList[i].name.includes(filter)) {
                 html += "<div class=\"message\"><span class=\"messageHeader\">" + messageList[i].date.substring(11,16) + " " + messageList[i].name + ":</span> " + messageList[i].message + "&#13;&#10;</div>";
             }
         }
