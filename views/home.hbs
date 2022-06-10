@@ -88,16 +88,7 @@
           <!-- <span class="name">Phone #</span>  -->
           <button class="follow-button">Direct message</button> 
 
-        </div>
-
-        <hr class="separation-line"> </hr>
-
-        <div class="second-suggestion">
-          <span class="name">Chefs name </span><span class="username">@usertag</span>
-          <button class="follow-button">Direct message</button>
-        </div>
-
-        <hr class="separation-line2"> </hr>
+        </div>        
       </div>
     </div>
 
@@ -132,10 +123,17 @@
             for(var i = 0; i < Object.keys(data).length; i++){
                 mealList.push(data[i]);
                 //html += "<div>" + data[i].name + ": date: " + data[i].date + ", text: " + data[i].meal + "</div>";
-                html += "<div class=\"message\"><span class=\"hidden\">" + data[i].username + ";" + data[i]._id + ";</span><span class=\"messageHeader\" onclick=\"getChefInfo(\"" + mealList[i].username + "\")>" + data[i].date.substring(0,10) + " " + mealList[i].username + " " + data[i].price + ":</span> " + data[i].mealName + "&#13;&#10;</div>";
-                console.log(html);
+                html += "<div class=\"message\"><span class=\"hidden\">" + data[i].username + ";" + data[i]._id + ";</span><span class=\"messageHeader\" id=\"MESSAGEHEADER\">" + data[i].date.substring(0,10) + " " + mealList[i].username + " " + data[i].price + ":</span> " + data[i].mealName + "&#13;&#10;</div>";
             }
             $("#messageBox").html(html);
+            var iter = 0;
+            $("message").children('#MESSAGEHEADER').each(function(){
+                $(this).addEventListener("click", function() {
+                    console.log("clicked");
+                    getChefInfo(mealList[iter].username);
+                    iter+=1;
+                }, false);
+            });
         })
     }
 
@@ -157,6 +155,7 @@
     }
 
     function getChefInfo(name) {
+        console.log("hacker voice, im in");
         fetch("http://localhost:8080/allUsers")
         .then(res => res.json())
         .then(data => {
@@ -179,11 +178,20 @@
         for(var i = 0; i < mealList.length; i++) {
             let filter = dropdown.value;
             if(mealList[i].cuisine.includes(filter)) {
-                html += "<div class=\"message\"><span class=\"messageHeader\" onclick=\"getChefInfo(\"" + mealList[i].username + "\")\">" + mealList[i].date.substring(0,10) + " " + mealList[i].username + " " + mealList[i].price + ":</span> " + mealList[i].mealName + "&#13;&#10;</div>";
-                console.log(html);
+                html += "<div class=\"message\"><span class=\"messageHeader\" id=\"MESSAGEHEADER\">" + mealList[i].date.substring(0,10) + " " + mealList[i].username + " " + mealList[i].price + ":</span> " + mealList[i].mealName + "&#13;&#10;</div>";
+                
             }
         }
         $("#messageBox").html(html);
+        var iter = 0;
+        $("message").children('#MESSAGEHEADER').each(function(){
+            $(this).addEventListener("click", function() {
+                console.log("clicked");
+                getChefInfo(mealList[iter].username);
+                iter+=1;
+            }, false);
+        });
+        
     }
     function getCookie(name) {
         var dc = document.cookie;
