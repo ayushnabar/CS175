@@ -1,49 +1,123 @@
 <div id="box">
-<h1> Home </h1>
 <p>This is the {{ title }} page</p>
-{{#if isAvailable}}
-<ul>
-    {{#each rooms}}
-         <li> <a href={{this.name}}/{{this.id}}> {{this.name}}  </a></li>
-    {{/each}}
-</ul>
-{{/if}}
+<h1> Home </h1>
+    <header>
+      <nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between" role="navigation">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse nav-left" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Moments</a>
+              </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="#">Reccomendations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Notification</a>
+              </li>
+            </ul>
+            <a class="navbar-brand"><img src="images/Logo.png" alt="Twitter Logo" class="logo"></a>
+            <form action="/navCreate" method="POST">
+                <input type="submit" class="tweet-button align-end" value="Create"/>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="wrapper d-flex justify-content-center">
 
-<form action="/create" method="POST">
-    <input type="text" name="roomName" id="roomName" placeholder="enter room name"/><br>
-    <input type="submit" id="submitRoom" value="create room"/>
-</form>
-<div id="messageBox"> {{ messagesHTML }} </div>
+      <div class="left-content d-flex flex-column bg-light">
+        <!-- <div class="banner">
+          <img src="images/ratatouille-banner.png" class="banner-img" alt="ratatouille-banner"/>
+        </div>  -->
+        <div class="profile d-flex">
+          <div class="profile-info d-flex flex-column">
+            <div class="profile-name" id="username" value=""></div>
+            <div class="text-secondary" id="age" value=""></div>
+            <div class="text-secondary" id="email" value=""></div>
+            <div class="text-secondary" id="phoneNumber" value=""></div>
+          </div>
+        </div>
+        
+        <div class="Filter d-flex">
+          <div class="statistics-pair">
+            <p class="statistics-title">Filter</p>
+            <!-- <p class="statistics-number">5049</p> -->
+          </div>
+          <label for="filters">Filter:</label>
+        <select name="filters" id="filters" onchange="filterMeals()">
+            <option value="">None</option>
+            <option value="italian">Italian</option>
+            <option value="thai">Thai</option>
+            <option value="indian">Indian</option>
+            <option value="mexican">Mexican</option>
+            <option value="american">American</option>
+            <option value="vietnamese">Vietnamese</option>
+            <option value="japanese">Japanese</option>
+            <option value="korean">Korean</option>
+            <option value="hawaiian">Hawaiian</option>
+            <option value="mediterranean">Mediterranean</option>
+            <option value="cajun">Cajun</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="seafood">Seafood</option>
+        </select>
+        </div>
+      </div>
 
-</div>
+      <div class="center-content">
+        <div class="Foodstitle">
+          <h1>Foods</h1>
+        </div>
+        <!-- <hr class="separation-line"> </hr> -->
+        <!-- <span class="name"></span>Cuisine Type </span> -->
+        <div class="separate">
+          <div id="messageBox"> {{ messagesHTML }} </div>
+        </div>
+      </div>
+      
+      <div class="right-content">
+        <p class="right-header" text-align="center">Chefs Available </p>
+        <div class="first-suggestion">
+            <div class="profile-name" id="chefUsername" value=""></div>
+            <div class="text-secondary" id="chefEmail" value=""></div>
+            <div class="text-secondary" id="chefPhoneNumber" value=""></div>
+          <!-- <span class="name">Phone #</span>  -->
+          <button class="follow-button">Direct message</button> 
+
+        </div>
+
+        <hr class="separation-line"> </hr>
+
+        <div class="second-suggestion">
+          <span class="name">Chefs name </span><span class="username">@usertag</span>
+          <button class="follow-button">Direct message</button>
+        </div>
+
+        <hr class="separation-line2"> </hr>
+      </div>
+    </div>
+
 <form action="/logout" method="POST">
     <input type="submit" id="logout" value="Logout"/>
 </form>
 
-<label for="filters">Filter:</label>
-<select name="filters" id="filters" onchange="filterMeals()">
-    <option value="">None</option>
-    <option value="italian">Italian</option>
-    <option value="thai">Thai</option>
-    <option value="indian">Indian</option>
-    <option value="mexican">Mexican</option>
-    <option value="american">American</option>
-    <option value="vietnamese">Vietnamese</option>
-    <option value="japanese">Japanese</option>
-    <option value="korean">Korean</option>
-    <option value="hawaiian">Hawaiian</option>
-    <option value="mediterranean">Mediterranean</option>
-    <option value="cajun">Cajun</option>
-    <option value="vegetarian">Vegetarian</option>
-    <option value="vegan">Vegan</option>
-    <option value="seafood">Seafood</option>
-</select>
+
 
 
 
 <script type="text/javascript">
     var mealList = new Array();
     $(function() {
+        name = getCookie("username");
+        getUserInfo(name);
+        
+        
+
+
         getMeals();
         $(".filters").on("change", filterMeals);
 
@@ -54,18 +128,50 @@
         fetch("http://localhost:8080/meals")
         .then(res => res.json())
         .then(data => {
-            console.log("in data");
             var html = "";
             for(var i = 0; i < Object.keys(data).length; i++){
                 mealList.push(data[i]);
                 //html += "<div>" + data[i].name + ": date: " + data[i].date + ", text: " + data[i].meal + "</div>";
-                html += "<div class=\"message\"><span class=\"hidden\">" + data[i].username + ";" + data[i]._id + ";</span><span class=\"messageHeader\">" + data[i].date.substring(0,10) + " " + mealList[i].username + " " + data[i].price + ":</span> " + data[i].mealName + "&#13;&#10;</div>";
-                console.log(html)
+                html += "<div class=\"message\"><span class=\"hidden\">" + data[i].username + ";" + data[i]._id + ";</span><span class=\"messageHeader\" onclick=\"getChefInfo(\"" + mealList[i].username + "\")>" + data[i].date.substring(0,10) + " " + mealList[i].username + " " + data[i].price + ":</span> " + data[i].mealName + "&#13;&#10;</div>";
+                console.log(html);
             }
             $("#messageBox").html(html);
-            console.log($("#messageBox"));
         })
     }
+
+    function getUserInfo(name) {
+        fetch("http://localhost:8080/allUsers")
+        .then(res => res.json())
+        .then(data => {
+            for(var i = 0; i < Object.keys(data).length; i++){
+                if(data[i].username == name) {
+                    console.log("found matching user");
+                    $("#username").text(name);
+                    $("#age").text(data[i].age);
+                    $("#email").text(data[i].email);
+                    $("#phoneNumber").text(data[i].phoneNumber);
+                    break;
+                }   
+            }
+        })
+    }
+
+    function getChefInfo(name) {
+        fetch("http://localhost:8080/allUsers")
+        .then(res => res.json())
+        .then(data => {
+            for(var i = 0; i < Object.keys(data).length; i++){
+                if(data[i].username == name) {
+                    console.log("found matching user");
+                    $("#chefUsername").text(name);
+                    $("#chefEmail").text(data[i].email);
+                    $("#chefPhoneNumber").text(data[i].phoneNumber);
+                    break;
+                }   
+            }
+        })
+    }
+
     function filterMeals() {
         let dropdown = document.getElementById("filters");
         var html = "";
@@ -73,10 +179,31 @@
         for(var i = 0; i < mealList.length; i++) {
             let filter = dropdown.value;
             if(mealList[i].cuisine.includes(filter)) {
-                html += "<div class=\"message\"><span class=\"messageHeader\">" + mealList[i].date.substring(0,10) + " " + mealList[i].username + " " + mealList[i].price + ":</span> " + mealList[i].mealName + "&#13;&#10;</div>";
+                html += "<div class=\"message\"><span class=\"messageHeader\" onclick=\"getChefInfo(\"" + mealList[i].username + "\")\">" + mealList[i].date.substring(0,10) + " " + mealList[i].username + " " + mealList[i].price + ":</span> " + mealList[i].mealName + "&#13;&#10;</div>";
+                console.log(html);
             }
         }
         $("#messageBox").html(html);
+    }
+    function getCookie(name) {
+        var dc = document.cookie;
+        var prefix = name + "=";
+        var begin = dc.indexOf("; " + prefix);
+        if (begin == -1) {
+            begin = dc.indexOf(prefix);
+            if (begin != 0) return null;
+        }
+        else
+        {
+            begin += 2;
+            var end = document.cookie.indexOf(";", begin);
+            if (end == -1) {
+                end = dc.length;
+            }
+        }
+        // because unescape has been deprecated, replaced with decodeURI
+        //return unescape(dc.substring(begin + prefix.length, end));
+        return decodeURI(dc.substring(begin + prefix.length, end));
     }
 
 </script>

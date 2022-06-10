@@ -83,6 +83,22 @@ app.post("/createText", function(req, res){
     }
 })
 
+app.post("/navCreate", function(req, res){
+  try{
+    res.redirect("/createMeal")
+  } catch(error) {
+    res.status(500).send(error)
+  }
+})
+
+app.post("/logout", function(req, res){
+  try{
+    res.clearCookie("username");
+    res.redirect("/login")
+  } catch(error) {
+    res.status(500).send(error)
+  }
+})
 // POST new meal
 app.post("/createMeal", function(req, res){
 
@@ -225,6 +241,12 @@ app.get("/:roomID/messages", function(req, res){
 })
 app.get("/meals", function(req, res){
   Meal.find().lean().then(items => {
+      res.json(items)
+  })
+})
+
+app.get("/allUsers", function(req, res){
+  User.find().lean().then(items => {
       res.json(items)
   })
 })
