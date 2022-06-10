@@ -8,7 +8,8 @@
     <input id="mealName" type="text" name="mealName" placeholder="enter dish name"/><br>
     <input id="price" type="number" name="price" placeholder="enter price in dollars"/><br>
     <label for="filters">Filter:</label>
-    <select name="filters" id="filters" onchange="filterMessages()">
+    <select name="filters" id="filters" onchange="changeCuisine()">
+        <option value="">None</option>
         <option value="italian">Italian</option>
         <option value="thai">Thai</option>
         <option value="indian">Indian</option>
@@ -59,4 +60,9 @@ function getCookie(name) {
         //return unescape(dc.substring(begin + prefix.length, end));
         return decodeURI(dc.substring(begin + prefix.length, end));
     }
+function changeCuisine() {
+    let dropdown = document.getElementById("filters");
+    let filter = dropdown.value;
+    document.getElementById("cuisine1").value = filter;
+}
 </script>

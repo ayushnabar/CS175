@@ -6,7 +6,7 @@ const MealSchema = new Schema({
     required: true
   },
   price: {
-    type: Date,
+    type: String,
     required: true
   },
   cuisine: {
@@ -16,6 +16,10 @@ const MealSchema = new Schema({
   username: {
       type: String,
       required: true
+  },
+  date: {
+    type: Date,
+    required: true
   }
 });
 module.exports = Item = mongoose.model('meal', MealSchema);

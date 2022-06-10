@@ -14,7 +14,7 @@ function getHome(request, response){
   // do any work you need to do, then
   Room.find().lean().then(items =>
     {
-      response.render('home', {title: 'home', rooms: items, isAvailable: true});
+      response.render('home', {title: 'home', rooms: items, isAvailable: true, messagesHTML: request.param.messageHTML});
     })
 
 }

@@ -90,15 +90,17 @@ app.post("/createMeal", function(req, res){
       mealName: "",
       price: "",
       cuisine: "",
-      username: ""
+      username: "",
+      date: Date.now()
   })
 
   if(req.body.mealName != "null") {
       newMeal = new Meal({
           mealName: req.body.mealName,
-          price: req.body.price.toString(),
+          price: "$" + req.body.price.toString(),
           cuisine: req.body.cuisine,
-          username: req.body.name
+          username: req.body.name,
+          date: Date.now()
       })
       console.log("newMeal = " + newMeal.mealName)
       newMeal.save().then(console.log("meal added"))
@@ -220,6 +222,11 @@ app.get("/:roomID/messages", function(req, res){
     Message.find({roomID: req.params.roomID}).lean().then(items => {
         res.json(items)
     })
+})
+app.get("/meals", function(req, res){
+  Meal.find().lean().then(items => {
+      res.json(items)
+  })
 })
 
 app.get('/', loginHandler.loginUser);
