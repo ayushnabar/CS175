@@ -10,6 +10,7 @@
 
 <label for="filters">Filter:</label>
 <select name="filters" id="filters" onchange="filterMessages()">
+    <option value="">None</option>
     <option value="italian">Italian</option>
     <option value="thai">Thai</option>
     <option value="indian">Indian</option>
@@ -75,7 +76,8 @@
             }
         })
 
-        var intervalID = setInterval(getMessages, 3000);
+        //var intervalID = setInterval(getMessages, 3000);
+        getMessages();
 
         $(".submitInput").click(function() {
             $(".messageInput").value = "";
@@ -87,6 +89,7 @@
     })
 
     function getMessages() {
+        
         fetch("http://localhost:8080/{{ newRoomId }}/messages")
         .then(res => res.json())
         .then(data => {

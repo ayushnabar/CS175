@@ -13,12 +13,70 @@
     <input type="text" name="roomName" id="roomName" placeholder="enter room name"/><br>
     <input type="submit" id="submitRoom" value="create room"/>
 </form>
+<div id="messageBox"> {{ messagesHTML }} </div>
+
 </div>
 <form action="/logout" method="POST">
     <input type="submit" id="logout" value="Logout"/>
 </form>
 
+<label for="filters">Filter:</label>
+<select name="filters" id="filters" onchange="filterMeals()">
+    <option value="">None</option>
+    <option value="italian">Italian</option>
+    <option value="thai">Thai</option>
+    <option value="indian">Indian</option>
+    <option value="mexican">Mexican</option>
+    <option value="american">American</option>
+    <option value="vietnamese">Vietnamese</option>
+    <option value="japanese">Japanese</option>
+    <option value="korean">Korean</option>
+    <option value="hawaiian">Hawaiian</option>
+    <option value="mediterranean">Mediterranean</option>
+    <option value="cajun">Cajun</option>
+    <option value="vegetarian">Vegetarian</option>
+    <option value="vegan">Vegan</option>
+    <option value="seafood">Seafood</option>
+</select>
 
-{{!-- <script>
-    fetch("http://localhost:8080/getRoom").then()
-</script> --}}
+
+
+<script type="text/javascript">
+    var mealList = new Array();
+    $(function() {
+        getMeals();
+        $(".filters").on("change", filterMeals);
+
+
+    })
+    function getMeals() {
+        console.log("this is working")
+        fetch("http://localhost:8080/meals")
+        .then(res => res.json())
+        .then(data => {
+            console.log("in data");
+            var html = "";
+            for(var i = 0; i < Object.keys(data).length; i++){
+                mealList.push(data[i]);
+                //html += "<div>" + data[i].name + ": date: " + data[i].date + ", text: " + data[i].meal + "</div>";
+                html += "<div class=\"message\"><span class=\"hidden\">" + data[i].username + ";" + data[i]._id + ";</span><span class=\"messageHeader\">" + data[i].date.substring(0,10) + " " + mealList[i].username + " " + data[i].price + ":</span> " + data[i].mealName + "&#13;&#10;</div>";
+                console.log(html)
+            }
+            $("#messageBox").html(html);
+            console.log($("#messageBox"));
+        })
+    }
+    function filterMeals() {
+        let dropdown = document.getElementById("filters");
+        var html = "";
+        console.log(1)
+        for(var i = 0; i < mealList.length; i++) {
+            let filter = dropdown.value;
+            if(mealList[i].cuisine.includes(filter)) {
+                html += "<div class=\"message\"><span class=\"messageHeader\">" + mealList[i].date.substring(0,10) + " " + mealList[i].username + " " + mealList[i].price + ":</span> " + mealList[i].mealName + "&#13;&#10;</div>";
+            }
+        }
+        $("#messageBox").html(html);
+    }
+
+</script>
