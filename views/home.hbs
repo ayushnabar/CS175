@@ -1,5 +1,9 @@
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="index.css">
+  </head>
 <div id="box">
-<p>This is the {{ title }} page</p>
+<p class="hidden">This is the {{ title }} page</p>
 <h1> Home </h1>
     <header>
       <nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between" role="navigation">
@@ -44,7 +48,7 @@
         
         <div class="Filter d-flex">
           <div class="statistics-pair">
-            <p class="statistics-title">Filter</p>
+            {{!-- <p class="statistics-title">Filter</p> --}}
             <!-- <p class="statistics-number">5049</p> -->
           </div>
           <label for="filters">Filter:</label>
@@ -82,19 +86,31 @@
       <div class="right-content">
         <p class="right-header" text-align="center">Chefs Available </p>
         <div class="first-suggestion">
-            <div class="profile-name" id="chefUsername" value=""></div>
+            <div class="profile-name1" id="chefUsername" value=""></div>
             <div class="text-secondary" id="chefEmail" value=""></div>
             <div class="text-secondary" id="chefPhoneNumber" value=""></div>
           <!-- <span class="name">Phone #</span>  -->
           <button class="follow-button">Direct message</button> 
 
-        </div>        
+        </div>
+
+        <hr class="separation-line"> </hr>
+
+        <div class="second-suggestion">
+          <span class="name">Chefs name </span><span class="username">@usertag</span>
+          <button class="follow-button">Direct message</button>
+        </div>
+
+        <hr class="separation-line2"> </hr>
       </div>
     </div>
 
 <form action="/logout" method="POST">
     <input type="submit" id="logout" value="Logout"/>
 </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
 
