@@ -7,6 +7,7 @@
   border-style: solid;
   overflow: auto; /* text-indent: 10px; */
   background-color: black;
+  margin-left: 40px;
 }
 
 .message {
@@ -43,7 +44,7 @@ body{
 p{
   font-size:12px;
   text-decoration: none;
-  color:#00000;
+  color: #00000;
 }
 
 h1{
@@ -53,9 +54,9 @@ h1{
 
 #box{
   background:white;
-  width:300px;
+  width:600px;
   border-radius:6px;
-  margin: 0 auto 0 auto;
+  margin: 65px auto 0 auto;
   padding:0px 0px 70px 0px;
   border: #2980b9 4px solid;
 }
@@ -230,7 +231,7 @@ header {
 }
 
 .navbar {
-  align-items: center;
+  align-items: left;
 }
 
 .nav-item {
@@ -277,6 +278,7 @@ button {
 .wrapper {
   max-width: 1190px;
   margin: 56px auto;
+  margin-left: 100px;
   padding: 10px;
 }
 
@@ -322,12 +324,21 @@ button {
 .profile-info {
   margin-top: 30px;
   margin-bottom: 10px;
+  margin-left: 20px;
+  padding: 2px 1px;
+}
+
+.first-suggestion {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  margin-left: 20px;
   padding: 2px 1px;
 }
 
 .profile-name {
   text-decoration: underline;
   font-weight: bold;
+  
 }
 
 .Biography {
@@ -377,7 +388,7 @@ ul.checkbox li {
 .center-content {
   min-width: 580px;
   background-color: white;
-  margin: 5px 5px;
+  margin: 5px 20px 5px;
   height: auto;
   border-radius: 25px;
 }
@@ -393,6 +404,7 @@ ul.checkbox li {
   background-color: white;
   margin: 5px 5px;
   border-radius: 25px;
+  right: 0px;
   height: auto;
 }
 
@@ -452,6 +464,7 @@ ul.checkbox li {
   right: 10px;
   width: 400px;
   height: 50px;
+  margin-top: 30px;
 }
 
 .separation-line {
